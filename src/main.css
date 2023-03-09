@@ -1011,7 +1011,12 @@ p {
   -o-object-fit: cover;
   object-fit: cover;
 }
-
+.lws-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% -50%);
+}
 .lws-card-header {
   margin-bottom: 0.25rem;
   display: flex;

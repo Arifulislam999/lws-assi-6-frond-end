@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import ProductSingle from "./ProductSingle";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../../Redux/Features/posts/PostsSlice";
-import Loading from "../../Redux/utils/Loading";
+import Loader from "../../Redux/utils/Loader";
 
 function ProductList() {
   const dispatch = useDispatch();
@@ -45,16 +45,16 @@ function ProductList() {
   };
 
   let content;
-  if (isLoading) content = <Loading />;
+  if (isLoading) content = <Loader />;
   else if (!isLoading && isError)
     content = <h2>There was an error occured. Error:{error}</h2>;
   else if (!isLoading && !isError && posts?.length === 0)
     content = <h2>There was No Post aviaable.</h2>;
   else if (!isLoading && !isError && posts?.length > 0)
     content = posts
+      .filter(filterByStatus)
       .slice()
       .sort(filterBySort)
-      .filter(filterByStatus)
       .map((post, index) => <ProductSingle post={post} key={index} />);
 
   return (

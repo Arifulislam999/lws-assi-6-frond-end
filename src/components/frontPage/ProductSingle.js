@@ -3,22 +3,33 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchLike } from "../../Redux/Features/Like/likeSlice";
 import { fetchSave } from "../../Redux/Features/filter/save/saveSlice";
+import { fetchPosts } from "../../Redux/Features/posts/PostsSlice";
 function ProductSingle({ post = {} }) {
   const { image, title, createdAt, likes, tags, id, isSaved } = post;
   const dispatch = useDispatch();
 
   const [like, setLike] = useState(likes);
 
-  const handlerLiked = (id) => {
+  const handlerLiked = async (id) => {
     setLike((prev) => prev + 1);
-    dispatch(fetchLike({ id, likes: like + 1 }));
+    try {
+      await dispatch(fetchLike({ id, likes: like + 1 })).unwrap();
+      dispatch(fetchPosts());
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const [save, setSave] = useState(isSaved);
 
-  const handlerSave = (id) => {
+  const handlerSave = async (id) => {
     setSave(true);
-    dispatch(fetchSave(id));
+    try {
+      await dispatch(fetchSave(id)).unwrap();
+      dispatch(fetchPosts());
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -46,9 +57,9 @@ function ProductSingle({ post = {} }) {
           ))}
         </div>
         {/* <!-- Show this element if post is saved --> */}
-        <div className="flex gap-2 mt-4" onClick={() => handlerSave(id)}>
+        <div className="flex gap-2 mt-4 cursor" onClick={() => handlerSave(id)}>
           <span className={save ? "lws-badge blue" : "lws-badge"}>
-            {save ? "Saved" : "Save"}
+            {save === true ? "Saved" : "Save"}
           </span>
         </div>
         {/* <!-- Show this element if post is saved Ends --> */}
