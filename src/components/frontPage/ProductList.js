@@ -9,7 +9,7 @@ function ProductList() {
 
   const Posts = useSelector((state) => state.posts);
   const filter = useSelector((state) => state.filter);
-  const { status } = filter;
+  const { status, sort } = filter;
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
@@ -26,18 +26,23 @@ function ProductList() {
 
   const { posts, isLoading, error, isError } = Posts;
 
-  const getSortOrder = (likes) => {
-    return (a, b) => {
-      if (a[likes] > b[likes]) {
-        return 1;
-      } else if (a[likes] < b[likes]) {
-        return -1;
-      }
-      return 0;
-    };
+  const filterBySort = (a, b) => {
+    switch (sort) {
+      case "most_liked":
+        if (a.likes > b.likes) {
+          return -1;
+        }
+        break;
+      case "newest":
+        if (a.createdAt > b.createdAt) {
+          return -1;
+        }
+        break;
+      default:
+        return 0;
+    }
+    return 0;
   };
-
-  console.log(posts?.sort(getSortOrder("likes")));
 
   let content;
   if (isLoading) content = <Loading />;
@@ -47,6 +52,8 @@ function ProductList() {
     content = <h2>There was No Post aviaable.</h2>;
   else if (!isLoading && !isError && posts?.length > 0)
     content = posts
+      .slice()
+      .sort(filterBySort)
       .filter(filterByStatus)
       .map((post, index) => <ProductSingle post={post} key={index} />);
 
