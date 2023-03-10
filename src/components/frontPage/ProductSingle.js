@@ -2,34 +2,35 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchLike } from "../../Redux/Features/Like/likeSlice";
-import { fetchSave } from "../../Redux/Features/filter/save/saveSlice";
-import { fetchPosts } from "../../Redux/Features/posts/PostsSlice";
+import { fetchSave } from "../../Redux/Features/save/saveSlice";
+// import { fetchSave } from "../../Redux/Features/filter/save/saveSlice";
 function ProductSingle({ post = {} }) {
   const { image, title, createdAt, likes, tags, id, isSaved } = post;
   const dispatch = useDispatch();
 
   const [like, setLike] = useState(likes);
 
-  const handlerLiked = async (id) => {
+  const handlerLiked = (id) => {
     setLike((prev) => prev + 1);
-    try {
-      await dispatch(fetchLike({ id, likes: like + 1 })).unwrap();
-      dispatch(fetchPosts());
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(fetchLike({ id, likes: like + 1 }));
   };
 
   const [save, setSave] = useState(isSaved);
 
-  const handlerSave = async (id) => {
+  // const handlerSave = async (id) => {
+  //   setSave(true);
+  //   try {
+  //     await dispatch(fetchSave(id)).unwrap();
+  //     dispatch(fetchPosts());
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const handlerSave = ({ id, isSaved }) => {
+    dispatch(fetchSave(id));
+    console.log(isSaved);
     setSave(true);
-    try {
-      await dispatch(fetchSave(id)).unwrap();
-      dispatch(fetchPosts());
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
@@ -57,9 +58,12 @@ function ProductSingle({ post = {} }) {
           ))}
         </div>
         {/* <!-- Show this element if post is saved --> */}
-        <div className="flex gap-2 mt-4 cursor" onClick={() => handlerSave(id)}>
-          <span className={save ? "lws-badge blue" : "lws-badge"}>
-            {save === true ? "Saved" : "Save"}
+        <div className="flex gap-2 mt-4 cursor">
+          <span
+            className={isSaved || save ? "lws-badge blue" : "lws-badge"}
+            onClick={() => handlerSave({ id, isSaved })}
+          >
+            {isSaved || save === true ? "Saved" : "Save"}
           </span>
         </div>
         {/* <!-- Show this element if post is saved Ends --> */}

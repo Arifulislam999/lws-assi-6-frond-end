@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { saveAPI } from "./saveAPI";
 
 const initialState = {
-  save: false,
+  isSaved: false,
 };
 
 // async Thunk
@@ -12,12 +12,12 @@ export const fetchSave = createAsyncThunk("save/fetchSave", async (id) => {
 });
 
 const saveSlice = createSlice({
-  name: "likeCounte",
+  name: "save",
   initialState,
 
   extraReducers: (builder) => {
     builder.addCase(fetchSave.fulfilled, (state) => {
-      state.save = true;
+      state.isSaved = true;
       console.log(state.save);
     });
   },
