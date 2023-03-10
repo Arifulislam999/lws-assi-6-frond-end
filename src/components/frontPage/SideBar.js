@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   filterSort,
   filterStatus,
 } from "../../Redux/Features/filter/filterSlice";
 function SideBar() {
   const dispatch = useDispatch();
-  const [all, setAll] = useState("All");
+  const { status } = useSelector((state) => state.filter);
+  const [all, setAll] = useState(status);
   const handlerSort = (e) => {
     dispatch(filterSort(e.target.value));
   };

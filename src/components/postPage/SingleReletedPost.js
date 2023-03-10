@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Tags from "./Tags";
 function SingleReletedPost({ posts = {} }) {
-  return posts.map((post, index) => (
+  return posts?.map((post, index) => (
     <div className="space-y-4 related-post-container" key={index}>
       <div className="card">
         <Link to={`/post/${post.id}`}>

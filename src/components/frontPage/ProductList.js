@@ -52,9 +52,9 @@ function ProductList() {
     content = <h2>There was No Post aviaable.</h2>;
   else if (!isLoading && !isError && posts?.length > 0)
     content = posts
-      .filter(filterByStatus)
       .slice()
       .sort(filterBySort)
+      .filter(filterByStatus)
       .map((post, index) => <ProductSingle post={post} key={index} />);
 
   return (

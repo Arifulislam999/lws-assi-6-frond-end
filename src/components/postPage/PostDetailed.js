@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchSave } from "../../Redux/Features/save/saveSlice";
+import { updateSave } from "../../Redux/Features/posts/PostsSlice";
 function PostDetailed({ post = {} }) {
-  const { image, title, tags, likes, description } = post;
-
+  const { image, title, tags, likes, description, isSaved, id } = post;
+  const [save, setSave] = useState(isSaved);
+  const dispatch = useDispatch();
+  const handlerSave = (id) => {
+    dispatch(updateSave(id));
+    dispatch(fetchSave(id));
+    setSave(true);
+  };
   return (
     <main className="post">
       <img
@@ -26,8 +35,13 @@ function PostDetailed({ post = {} }) {
           </button>
           {/* <!-- handle save on button click --> */}
           {/* <!-- use ".active" className and "Saved" text  if a post is saved, other wise "Save" --> */}
-          <button className="active save-btn" id="lws-singleSavedBtn">
-            <i className="fa-regular fa-bookmark"></i> Saved
+          <button
+            className={isSaved || save ? "save-btn active" : "save-btn"}
+            id="lws-singleSavedBtn"
+            onClick={() => handlerSave(id)}
+          >
+            <i className="fa-regular fa-bookmark"></i>{" "}
+            {isSaved || save ? "Saved" : "Save"}
           </button>
         </div>
         <div className="mt-6">

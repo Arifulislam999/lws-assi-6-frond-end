@@ -15,6 +15,7 @@ function Section() {
   useEffect(() => {
     dispatch(fetchSinglePost(id));
   }, [dispatch, id]);
+
   useEffect(() => {
     dispatch(fetchReletedPost({ id, tags }));
   }, [dispatch, tags, id]);

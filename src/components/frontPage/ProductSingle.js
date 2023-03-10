@@ -7,7 +7,6 @@ import {
   incrementLike,
   updateSave,
 } from "../../Redux/Features/posts/PostsSlice";
-// import { fetchSave } from "../../Redux/Features/filter/save/saveSlice";
 function ProductSingle({ post = {} }) {
   const { image, title, createdAt, likes, tags, id, isSaved } = post;
   const dispatch = useDispatch();
@@ -21,16 +20,6 @@ function ProductSingle({ post = {} }) {
   };
 
   const [save, setSave] = useState(isSaved);
-
-  // const handlerSave = async (id) => {
-  //   setSave(true);
-  //   try {
-  //     await dispatch(fetchSave(id)).unwrap();
-  //     dispatch(fetchPosts());
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const handlerSave = ({ id, isSaved }) => {
     dispatch(fetchSave(id));
