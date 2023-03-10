@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchLike } from "../../Redux/Features/Like/likeSlice";
 import { fetchSave } from "../../Redux/Features/save/saveSlice";
+import {
+  incrementLike,
+  updateSave,
+} from "../../Redux/Features/posts/PostsSlice";
 // import { fetchSave } from "../../Redux/Features/filter/save/saveSlice";
 function ProductSingle({ post = {} }) {
   const { image, title, createdAt, likes, tags, id, isSaved } = post;
@@ -13,6 +17,7 @@ function ProductSingle({ post = {} }) {
   const handlerLiked = (id) => {
     setLike((prev) => prev + 1);
     dispatch(fetchLike({ id, likes: like + 1 }));
+    dispatch(incrementLike(id));
   };
 
   const [save, setSave] = useState(isSaved);
@@ -29,7 +34,7 @@ function ProductSingle({ post = {} }) {
 
   const handlerSave = ({ id, isSaved }) => {
     dispatch(fetchSave(id));
-    console.log(isSaved);
+    dispatch(updateSave(id));
     setSave(true);
   };
 

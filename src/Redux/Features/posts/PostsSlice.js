@@ -15,6 +15,27 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
 const postsSlice = createSlice({
   name: "posts",
   initialState,
+  reducers: {
+    incrementLike: (state, action) => {
+      console.log(action.payload);
+      state.posts.map((post) => {
+        if (post.id === action.payload) {
+          return (post.likes += 1);
+        } else {
+          return post;
+        }
+      });
+    },
+    updateSave: (state, action) => {
+      state.posts.map((post) => {
+        if (post.id === action.payload) {
+          return (post.isSaved = true);
+        } else {
+          return post;
+        }
+      });
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.pending, (state) => {
@@ -36,3 +57,4 @@ const postsSlice = createSlice({
   },
 });
 export default postsSlice.reducer;
+export const { incrementLike, updateSave } = postsSlice.actions;
